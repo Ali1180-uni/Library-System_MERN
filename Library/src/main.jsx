@@ -7,6 +7,7 @@ import Login from './Components/Login'
 import Signup from './Components/Signup'
 import About from './Components/About'
 import Books from './Components/Books'
+import Borrow from './Components/BorrowBook.jsx'
 import logo from '/Title Icon.png'
 import App from './App.jsx'
 import './index.css'
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/register" element={<Signup />} />
             <Route path="/about" element={<About />} />
             <Route path="/books" element={<Books />} />
+            <Route path="/borrow/:id" element={<Borrow />} /> 
           </Routes>
         </main>
         <Footer />
