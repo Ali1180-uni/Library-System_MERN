@@ -1,131 +1,302 @@
 [
   {
-    "id": 20136320,
-    "title": "Jewell's wholesale price list surplus, March 1944",
-    "subtitle": "surplus, March 1944",
-    "description": "A wholesale price list for surplus nursery items from March 1944, reflecting wartime-era stock and pricing.",
-    "image": "https://covers.openlibrary.org/b/id/11552000-M.jpg",
+    "id": 22458901,
+    "title": "The Great Gatsby",
+    "description": "A classic novel exploring wealth, love, and the American Dream in the Roaring Twenties.",
+    "image": "https://covers.openlibrary.org/b/id/7222246-M.jpg",
     "authors": [
       {
-        "id": 14593696,
-        "name": "Jewell Nurseries"
-      }
-    ]
-  },
-  {
-    "id": 17496594,
-    "title": "The 2007-2012 World Outlook for Ceiling, Wall-Mounted, and Floor-Mounted Refrigeration Coolers with 6,001 to 8,000 BTU Per Hour",
-    "description": "A market outlook report covering refrigeration cooler demand and industry trends for the 2007 to 2012 period.",
-    "image": "https://covers.openlibrary.org/b/id/2440023-M.jpg",
-    "authors": [
-      {
-        "id": 13033190,
-        "name": "Philip M. Parker"
-      }
-    ]
-  },
-  {
-    "id": 13469330,
-    "title": "The bar-tender's guide",
-    "subtitle": "or How to mix all kinds of plain and fancy drinks, containing...directions for mixing all the beverages used in the United States, together with the most popular British, French, German, Italian, Russian, and Spanish recipes; embracing punches, juleps, cobblers, etc. ...",
-    "description": "A classic bartending manual with recipes and instructions for mixing a wide range of drinks and cocktails.",
-    "image": "https://covers.openlibrary.org/b/id/9789375-M.jpg",
-    "authors": [
-      {
-        "id": 13469324,
-        "name": "Jerry Thomas"
-      }
-    ]
-  },
-  {
-      "id": 14664264,
-      "title": "101 stupid things employees do to sabotage success",
-      "image": "https://covers.openlibrary.org/b/id/2083414-M.jpg",
-      "description": "A workplace guide that highlights common employee mistakes and how they can hurt success.",
-      "authors": [
-      {
-        "id": 14664244,
-        "name": "Richard Baisner"
+        "id": 1029381,
+        "name": "F. Scott Fitzgerald"
       }
     ],
     "rating": {
-      "average": 0
+      "average": 4.3
     }
   },
   {
-    "id": 19886462,
-    "title": "Getting grilled",
-    "description": "A grilling-focused cookbook or guide centered on outdoor cooking and flavor-packed recipes.",
-    "image": "https://covers.openlibrary.org/b/id/10758394-M.jpg",
+    "id": 22458902,
+    "title": "To Kill a Mockingbird",
+    "description": "A powerful story about justice, morality, and racial inequality in the American South.",
+    "image": "https://covers.openlibrary.org/b/id/8225261-M.jpg",
     "authors": [
       {
-        "id": 19886456,
-        "name": "Wade Christensen"
+        "id": 1029382,
+        "name": "Harper Lee"
       }
     ],
     "rating": {
-      "average": 0
+      "average": 4.8
     }
   },
   {
-    "id": 22468934,
-    "title": "Lullaby",
-    "description": "A literary title centered on memory, mood, and the quiet power of storytelling.",
-    "image": "https://covers.openlibrary.org/b/id/4325692-M.jpg",
+    "id": 22458903,
+    "title": "1984",
+    "description": "A dystopian novel depicting a society under constant surveillance and control.",
+    "image": "https://covers.openlibrary.org/b/id/7222247-M.jpg",
     "authors": [
       {
-        "id": 14109824,
-        "name": "Oakley M. Hall"
+        "id": 1029383,
+        "name": "George Orwell"
       }
     ],
     "rating": {
-      "average": 0.6000000238418579
+      "average": 4.7
     }
   },
   {
-    "id": 17054132,
-    "title": "Knowing God's Will Made Easier",
-    "description": "A practical guide aimed at helping readers understand spiritual guidance and decision-making.",
-    "image": "https://covers.openlibrary.org/b/id/804348-M.jpg",
+    "id": 22458904,
+    "title": "The Hobbit",
+    "description": "A fantasy adventure following Bilbo Baggins on an unforgettable quest.",
+    "image": "https://covers.openlibrary.org/b/id/6979861-M.jpg",
     "authors": [
       {
-        "id": 13162318,
-        "name": "Mark Water"
+        "id": 1029384,
+        "name": "J.R.R. Tolkien"
       }
     ],
     "rating": {
-      "average": 0.800000011920929
+      "average": 4.8
     }
   },
   {
-    "id": 18441670,
-    "title": "Manual of primary eye care",
-    "description": "A medical reference covering the essentials of primary eye care and clinical practice.",
-    "image": "https://covers.openlibrary.org/b/id/1399613-M.jpg",
+    "id": 22458905,
+    "title": "Pride and Prejudice",
+    "description": "A beloved romance novel exploring class, reputation, and relationships.",
+    "image": "https://covers.openlibrary.org/b/id/8091016-M.jpg",
     "authors": [
       {
-        "id": 18441660,
-        "name": "Narciss Okhravi"
+        "id": 1029385,
+        "name": "Jane Austen"
       }
     ],
     "rating": {
-      "average": 0
+      "average": 4.6
     }
   },
   {
-    "id": 14414406,
-    "title": "An Indian odyssey",
-    "subtitle": "tribulations, trials and triumphs of Gibson Band of the Mohawk tribe of the Iroquois Confederacy",
-    "description": "A personal odyssey recounting the struggles and triumphs of Gibson Band of the Mohawk tribe.",
-    "image": "https://covers.openlibrary.org/b/id/13264593-M.jpg",
+    "id": 22458906,
+    "title": "The Alchemist",
+    "description": "An inspiring tale about following dreams and discovering one's destiny.",
+    "image": "https://covers.openlibrary.org/b/id/8108691-M.jpg",
     "authors": [
       {
-        "id": 14414402,
-        "name": "Sylvia DuVernet"
+        "id": 1029386,
+        "name": "Paulo Coelho"
       }
     ],
     "rating": {
-      "average": 0
+      "average": 4.4
+    }
+  },
+  {
+    "id": 22458907,
+    "title": "The Catcher in the Rye",
+    "description": "A coming-of-age story centered on identity, alienation, and youth.",
+    "image": "https://covers.openlibrary.org/b/id/8231856-M.jpg",
+    "authors": [
+      {
+        "id": 1029387,
+        "name": "J.D. Salinger"
+      }
+    ],
+    "rating": {
+      "average": 4.0
+    }
+  },
+  {
+    "id": 22458908,
+    "title": "Brave New World",
+    "description": "A futuristic dystopian novel examining technology, control, and society.",
+    "image": "https://covers.openlibrary.org/b/id/8775110-M.jpg",
+    "authors": [
+      {
+        "id": 1029388,
+        "name": "Aldous Huxley"
+      }
+    ],
+    "rating": {
+      "average": 4.5
+    }
+  },
+  {
+    "id": 22458909,
+    "title": "The Lord of the Rings",
+    "description": "An epic fantasy saga of friendship, courage, and the battle against evil.",
+    "image": "https://covers.openlibrary.org/b/id/8231990-M.jpg",
+    "authors": [
+      {
+        "id": 1029389,
+        "name": "J.R.R. Tolkien"
+      }
+    ],
+    "rating": {
+      "average": 4.9
+    }
+  },
+  {
+    "id": 22458910,
+    "title": "Moby-Dick",
+    "description": "A classic maritime adventure and exploration of obsession and revenge.",
+    "image": "https://covers.openlibrary.org/b/id/7222276-M.jpg",
+    "authors": [
+      {
+        "id": 1029390,
+        "name": "Herman Melville"
+      }
+    ],
+    "rating": {
+      "average": 4.1
+    }
+  },
+  {
+    "id": 22458911,
+    "title": "The Road",
+    "description": "A post-apocalyptic story of survival and the bond between father and son.",
+    "image": "https://covers.openlibrary.org/b/id/240726-M.jpg",
+    "authors": [
+      {
+        "id": 1029391,
+        "name": "Cormac McCarthy"
+      }
+    ],
+    "rating": {
+      "average": 4.4
+    }
+  },
+  {
+    "id": 22458912,
+    "title": "Dune",
+    "description": "A science-fiction masterpiece involving politics, power, and destiny.",
+    "image": "https://covers.openlibrary.org/b/id/8101351-M.jpg",
+    "authors": [
+      {
+        "id": 1029392,
+        "name": "Frank Herbert"
+      }
+    ],
+    "rating": {
+      "average": 4.8
+    }
+  },
+  {
+    "id": 22458913,
+    "title": "Animal Farm",
+    "description": "A political allegory about power, corruption, and revolution.",
+    "image": "https://covers.openlibrary.org/b/id/8776041-M.jpg",
+    "authors": [
+      {
+        "id": 1029393,
+        "name": "George Orwell"
+      }
+    ],
+    "rating": {
+      "average": 4.6
+    }
+  },
+  {
+    "id": 22458914,
+    "title": "The Kite Runner",
+    "description": "A moving story of friendship, guilt, redemption, and family.",
+    "image": "https://covers.openlibrary.org/b/id/240727-M.jpg",
+    "authors": [
+      {
+        "id": 1029394,
+        "name": "Khaled Hosseini"
+      }
+    ],
+    "rating": {
+      "average": 4.7
+    }
+  },
+  {
+    "id": 22458915,
+    "title": "The Book Thief",
+    "description": "A historical novel set during World War II, narrated by Death.",
+    "image": "https://covers.openlibrary.org/b/id/240728-M.jpg",
+    "authors": [
+      {
+        "id": 1029395,
+        "name": "Markus Zusak"
+      }
+    ],
+    "rating": {
+      "average": 4.8
+    }
+  },
+  {
+    "id": 22458916,
+    "title": "Atomic Habits",
+    "description": "A practical guide to building good habits and breaking bad ones.",
+    "image": "https://covers.openlibrary.org/b/id/10594765-M.jpg",
+    "authors": [
+      {
+        "id": 1029396,
+        "name": "James Clear"
+      }
+    ],
+    "rating": {
+      "average": 4.9
+    }
+  },
+  {
+    "id": 22458917,
+    "title": "Deep Work",
+    "description": "Strategies for focused success in a distracted world.",
+    "image": "https://covers.openlibrary.org/b/id/9259251-M.jpg",
+    "authors": [
+      {
+        "id": 1029397,
+        "name": "Cal Newport"
+      }
+    ],
+    "rating": {
+      "average": 4.7
+    }
+  },
+  {
+    "id": 22458918,
+    "title": "Clean Code",
+    "description": "A software engineering guide to writing maintainable and readable code.",
+    "image": "https://covers.openlibrary.org/b/id/9641656-M.jpg",
+    "authors": [
+      {
+        "id": 1029398,
+        "name": "Robert C. Martin"
+      }
+    ],
+    "rating": {
+      "average": 4.8
+    }
+  },
+  {
+    "id": 22458919,
+    "title": "The Pragmatic Programmer",
+    "description": "A practical handbook for modern software developers.",
+    "image": "https://covers.openlibrary.org/b/id/8097443-M.jpg",
+    "authors": [
+      {
+        "id": 1029399,
+        "name": "Andrew Hunt"
+      }
+    ],
+    "rating": {
+      "average": 4.9
+    }
+  },
+  {
+    "id": 22458920,
+    "title": "Design Patterns",
+    "description": "A foundational guide to reusable object-oriented software solutions.",
+    "image": "https://covers.openlibrary.org/b/id/240729-M.jpg",
+    "authors": [
+      {
+        "id": 1029400,
+        "name": "Erich Gamma"
+      }
+    ],
+    "rating": {
+      "average": 4.7
     }
   }
 ]
