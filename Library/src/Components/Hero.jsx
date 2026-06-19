@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 function Hero() {
   return (
     <div
@@ -33,7 +34,9 @@ function Hero() {
           Books are the best friends you can have; they inform you, and entertain you, and they don't talk back.
         </p>
         <button className="bg-green-700 text-orange-50 px-8 py-3 rounded-md font-medium hover:bg-green-600 transition-colors shadow-lg">
-          Explore Now
+          <NavLink to="/books" className="hover:underline">
+            Explore Books
+          </NavLink>
         </button>
       </div>
     </div>

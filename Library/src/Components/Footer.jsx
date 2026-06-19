@@ -9,7 +9,7 @@ function Footer() {
 
         <div className="flex gap-6 mt-1">
           <a
-            href="https://www.linkedin.com/in/ali"
+            href="https://www.linkedin.com/in/hiali1180/"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1 hover:text-orange-50 transition-colors"
@@ -18,7 +18,7 @@ function Footer() {
           </a>
 
           <a
-            href="https://www.github.com/ali"
+            href="https://github.com/Ali1180-uni"
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1 hover:text-orange-50 transition-colors"
