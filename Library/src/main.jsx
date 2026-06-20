@@ -33,7 +33,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="borrow/:id" element={<Borrow />} />
               </Route>
               <Route path="/profile/:id" element={<Profile />} />
-              <Route path="/books/admin" element={<Admin AvailableBooks={data} />} />
+              <Route path="/books/adm" element={<Admin AvailableBooks={data} />} />
             </Route>
           </Routes>
         </main>
