@@ -57,3 +57,26 @@ function Login() {
 }
 
 export default Login;
+
+
+
+// import users from "../../api/user.json";
+
+// function Login() {
+//   const navigate = useNavigate();
+//   const { register, handleSubmit, formState: { errors } } = useForm();
+
+//   const onSubmit = (data) => {
+//     const matchedUser = users.find(
+//       (user) => user.username === data.username && user.password === data.password,
+//     );
+
+//     if (!matchedUser) {
+//       alert("Invalid username or password");
+//       return;
+//     }
+
+//     localStorage.setItem("token", JSON.stringify(matchedUser));
+//     localStorage.setItem("user", JSON.stringify(matchedUser));
+//     navigate(`/profile/${matchedUser.id}`);
+//   };

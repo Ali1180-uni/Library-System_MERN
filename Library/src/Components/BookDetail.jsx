@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 function BookDetail(props) {
   const authorName = props.book?.authors?.[0]?.name || "Unknown Author";
 
@@ -34,10 +34,11 @@ function BookDetail(props) {
         </p>
 
         <div className="mt-6 flex gap-3">
-          <NavLink to={`/borrow/${props.book?.id}`}>
-            <button className="rounded-lg bg-green-700 px-5 py-2 text-sm font-semibold text-orange-50 hover:bg-green-600">
-              Borrow
-            </button>
+          <NavLink
+            to={`/borrow/${props.book?.id}`}
+            className="rounded-lg bg-green-700 px-5 py-2 text-sm font-semibold text-orange-50 hover:bg-green-600"
+          >
+            Borrow
           </NavLink>
           <button
             onClick={props.onClose}
