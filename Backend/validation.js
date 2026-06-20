@@ -8,12 +8,12 @@ const objectIdRule = Joi.string().regex(/^[0-9a-fA-F]{24}$/).messages({
 // Validate User Registration Data
 const validateUser = (data) => {
   const schema = Joi.object({
-    name: Joi.string().min(2).max(50).required(),
+    firstName: Joi.string().min(2).max(10).required(),
     email: Joi.string().email().required(),
     username: Joi.string().alphanum().min(3).max(30).required(),
     password: Joi.string().min(6).required(),
     StudentID: Joi.string().required(),
-    role: Joi.string().valid('Admin', 'Student').required()
+    role: Joi.string().valid('Admin', 'Student').default('Student')
   });
   return schema.validate(data);
 };
@@ -26,7 +26,7 @@ const validateBook = (data) => {
     Image: Joi.string().uri().required().messages({
       'string.uri': 'Image must be a valid URL string.'
     }),
-    author: Joi.string().min(2).max(100).required(),
+    author: Joi.string().min(2).max(50).required(),
     Description: Joi.string().min(10).required(),
     isAvailable: Joi.boolean().default(true)
   });

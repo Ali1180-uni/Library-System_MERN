@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import RequestResult from "./ResquestResult";
 
 function Signup() {
   const {
@@ -7,7 +9,30 @@ function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [resultMessage, setResultMessage] = useState("");
+
+  // on submit the post request to the backend server to create a new user
+  const onSubmit = (data) => {
+    fetch("http://localhost:3000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(async (response) => {
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.error || "Failed to create account");
+        }
+        console.log("Success:", payload);
+        setResultMessage("Done");
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        setResultMessage(error.message || "Failed to create account");
+      });
+  };
 
   return (
     <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4 py-10">
@@ -20,7 +45,7 @@ function Signup() {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-green-900">
               First Name
             </label>
@@ -32,31 +57,31 @@ function Signup() {
             />
             {errors.firstName && <span className="text-red-500 text-xs">First name is required</span>}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-green-900">
-              Last Name
+              Email
             </label>
             <input
-              type="text"
-              placeholder="Last"
-              {...register("lastName", { required: true })}
+              type="email"
+              placeholder="email"
+              {...register("email", { required: true })}
               className="border border-green-300 rounded-md px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-500 transition"
             />
-            {errors.lastName && <span className="text-red-500 text-xs">Last name is required</span>}
+            {errors.email && <span className="text-red-500 text-xs">Email is required</span>}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-green-900">
               Student ID
             </label>
             <input
-              type="number"
+              type="text"
               placeholder="Student ID"
-              {...register("ID", { required: true })}
+              {...register("StudentID", { required: true })}
               className="border border-green-300 rounded-md px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-500 transition"
             />
-            {errors.ID && <span className="text-red-500 text-xs">Student ID is required</span>}
+            {errors.StudentID && <span className="text-red-500 text-xs">Student ID is required</span>}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-green-900">
               Username
             </label>
@@ -68,7 +93,7 @@ function Signup() {
             />
             {errors.username && <span className="text-red-500 text-xs">Username is required</span>}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-green-900">
               Password
             </label>
@@ -88,6 +113,12 @@ function Signup() {
             Sign Up
           </button>
         </form>
+
+        {resultMessage && (
+          <div className="mt-5 flex justify-center">
+            <RequestResult message={resultMessage} />
+          </div>
+        )}
 
         <p className="text-center text-sm text-gray-500 mt-5">
           Already have an account?{" "}

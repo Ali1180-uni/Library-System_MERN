@@ -17,3 +17,24 @@ body {
 .animate-fade-in {
   animation: fade-in 0.4s ease-out both;
 }
+
+/* Fade in for request result */
+@keyframes fade-in1 {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in1 {
+  animation: fade-in1 0.3s ease-out both;
+}
+
+/* Tick */
+.tick__circle { stroke-dasharray: 166; stroke-dashoffset: 166; animation: stroke 0.4s ease forwards; }
+.tick__check  { stroke-dasharray: 48;  stroke-dashoffset: 48;  animation: stroke 0.3s 0.3s ease forwards; }
+
+/* Cross */
+.cross__circle { stroke-dasharray: 166; stroke-dashoffset: 166; animation: stroke 0.4s ease forwards; }
+.cross__x      { stroke-dasharray: 68;  stroke-dashoffset: 68;  animation: stroke 0.3s 0.3s ease forwards; }
+
+@keyframes stroke {
+  to { stroke-dashoffset: 0; }
+}

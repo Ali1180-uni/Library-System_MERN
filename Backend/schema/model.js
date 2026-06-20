@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const joi = require('joi');
 
 // Book Schema
 const BookSchema = new mongoose.Schema({
@@ -18,7 +17,7 @@ const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, },
     StudentID: { type: String, required: true, unique: true },
-    role: { type: String, required: true, },
+    role: { type: String, enum: ['Admin', 'Student'], default: 'Student' },
     // Array of Book ObjectIds to track borrowed books
     borrowedBooks: [{
         type: mongoose.Schema.Types.ObjectId,
