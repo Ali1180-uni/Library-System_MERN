@@ -1,37 +1,51 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import RequestResult from "./ResquestResult";
 
 function Signup() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const [resultMessage, setResultMessage] = useState("");
+  const [resultType, setResultType] = useState("success");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // on submit the post request to the backend server to create a new user
-  const onSubmit = (data) => {
-    fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(async (response) => {
-        const payload = await response.json();
-        if (!response.ok) {
-          throw new Error(payload.error || "Failed to create account");
-        }
-        console.log("Success:", payload);
-        setResultMessage("Done");
-      })
-      .catch(error => {
-        console.error("Error:", error);
-        setResultMessage(error.message || "Failed to create account");
+  const onSubmit = async (data) => {
+    setResultMessage("");
+    setResultType("success");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(data)
       });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to create account");
+      }
+
+      setResultType("success");
+      setResultMessage("Done");
+      navigate("/login", { replace: true });
+    } catch (error) {
+      setResultType("error");
+      setResultMessage(error.message || "Failed to create account");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -108,15 +122,16 @@ function Signup() {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="bg-green-700 text-orange-50 py-2 rounded-md font-medium hover:bg-green-600 transition-colors mt-2"
           >
-            Sign Up
+            {isSubmitting ? "Creating..." : "Sign Up"}
           </button>
         </form>
 
         {resultMessage && (
           <div className="mt-5 flex justify-center">
-            <RequestResult message={resultMessage} />
+            <RequestResult message={resultType === "success" ? "Done" : resultMessage} />
           </div>
         )}
 

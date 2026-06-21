@@ -1,10 +1,15 @@
 import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Navbar(props) {
-  const authLink = props.Auth ? `/profile/${props.UserId}` : "/login";
+  const location = useLocation();
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
+
+  const hasUser = Boolean(currentUser?.name);
+  const authLink = hasUser ? `/profile/${currentUser.id}` : "/login";
 
   return (
-    <div className="flex items-center justify-between px-8 py-4 bg-green-700">
+    <div className="flex items-center justify-between px-8 py-4 bg-green-700" data-path={location.pathname}>
       <div className="flex items-center gap-3">
         <NavLink to="/" className="flex items-center gap-2">
           <img src={props.logo} alt="Logo" className="h-9 w-9 object-contain" />
@@ -26,7 +31,7 @@ function Navbar(props) {
         </li>
         <li className="cursor-pointer bg-orange-50 text-green-800 text-sm font-medium px-4 py-1.5 rounded-md hover:bg-green-100 transition-colors">
           <NavLink to={authLink}>
-            {props.Auth ? `Welcome, ${props.User}` : "Login"}
+            {hasUser ? `Welcome, ${currentUser.name}` : "Login"}
           </NavLink>
         </li>
       </ul>

@@ -1,9 +1,43 @@
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 function Login() {
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [serverError, setServerError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async (data) => {
+    setServerError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(data)
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Login failed");
+      }
+
+      localStorage.setItem("token", "authenticated");
+      localStorage.setItem("user", JSON.stringify(payload.user));
+      navigate("/books", { replace: true });
+    } catch (error) {
+      setServerError(error.message || "Login failed");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4">
@@ -37,10 +71,15 @@ function Login() {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="bg-green-700 text-orange-50 py-2 rounded-md font-medium hover:bg-green-600 transition-colors mt-2"
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
+
+          {serverError && (
+            <p className="text-sm text-red-600 text-center">{serverError}</p>
+          )}
 
         </form>
 
@@ -57,26 +96,3 @@ function Login() {
 }
 
 export default Login;
-
-
-
-// import users from "../../api/user.json";
-
-// function Login() {
-//   const navigate = useNavigate();
-//   const { register, handleSubmit, formState: { errors } } = useForm();
-
-//   const onSubmit = (data) => {
-//     const matchedUser = users.find(
-//       (user) => user.username === data.username && user.password === data.password,
-//     );
-
-//     if (!matchedUser) {
-//       alert("Invalid username or password");
-//       return;
-//     }
-
-//     localStorage.setItem("token", JSON.stringify(matchedUser));
-//     localStorage.setItem("user", JSON.stringify(matchedUser));
-//     navigate(`/profile/${matchedUser.id}`);
-//   };

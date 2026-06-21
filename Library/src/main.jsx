@@ -16,11 +16,18 @@ import App from "./App.jsx";
 import data from "../api/data.json";
 import "./index.css";
 
+const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
-        <Navbar logo={logo} Auth={false} User="John Doe" />
+        <Navbar
+          logo={logo}
+          Auth={Boolean(localStorage.getItem("token"))}
+          User={storedUser?.name}
+          UserId={storedUser?.id}
+        />
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<App />} />
@@ -33,7 +40,9 @@ createRoot(document.getElementById("root")).render(
                 <Route path="borrow/:id" element={<Borrow />} />
               </Route>
               <Route path="/profile/:id" element={<Profile />} />
-              <Route path="/books/adm" element={<Admin AvailableBooks={data} />} />
+              <Route element={<ProtectedRoute requiredRole="Admin" />}>
+                <Route path="/books/admin" element={<Admin AvailableBooks={data} />} />
+              </Route>
             </Route>
           </Routes>
         </main>
