@@ -22,7 +22,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.1",
     "morgan": "^1.11.0",
-    "nanoid": "^5.1.15"
+    "nanoid": "^5.1.15",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
   },
   "allowScripts": {
     "bcrypt@6.0.0": true

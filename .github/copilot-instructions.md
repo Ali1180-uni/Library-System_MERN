@@ -1,0 +1,7 @@
+- Keep responses concise
+- No explanations unless asked
+- Output code only
+- Use existing code style
+- No extra dependencies
+- Use the same variable names as in the original code
+- Don't do anything extra just move forward according to instructions

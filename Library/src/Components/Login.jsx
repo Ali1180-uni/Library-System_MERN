@@ -2,8 +2,9 @@ import { NavLink } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-function Login() {
+function Login({ setAuthUser }) {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [serverError, setServerError] = useState("");
@@ -26,14 +27,19 @@ function Login() {
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload.error || "Login failed");
+        setServerError(payload.message || "Login failed");
+        toast.error(payload.message || "Login failed");
+        return;
       }
 
       localStorage.setItem("token", "authenticated");
       localStorage.setItem("user", JSON.stringify(payload.user));
+      setAuthUser?.(payload.user);
+      toast.success("Login successful");
       navigate("/books", { replace: true });
     } catch (error) {
       setServerError(error.message || "Login failed");
+      toast.error(error.message || "Login failed");
     } finally {
       setIsSubmitting(false);
     }

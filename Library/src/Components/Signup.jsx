@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import RequestResult from "./ResquestResult";
+import toast from "react-hot-toast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -11,14 +11,13 @@ function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [resultMessage, setResultMessage] = useState("");
-  const [resultType, setResultType] = useState("success");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [serverMessage, setServerMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
 
   // on submit the post request to the backend server to create a new user
   const onSubmit = async (data) => {
-    setResultMessage("");
-    setResultType("success");
+    setServerMessage("");
     setIsSubmitting(true);
 
     try {
@@ -34,15 +33,20 @@ function Signup() {
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload.error || "Failed to create account");
+        setMessageType("error");
+        setServerMessage(payload.message || "Failed to create account");
+        toast.error(payload.message || "Failed to create account");
+        return;
       }
 
-      setResultType("success");
-      setResultMessage("Done");
+      setMessageType("success");
+      setServerMessage("Account created successfully");
+      toast.success("Account created successfully");
       navigate("/login", { replace: true });
     } catch (error) {
-      setResultType("error");
-      setResultMessage(error.message || "Failed to create account");
+      setMessageType("error");
+      setServerMessage(error.message || "Failed to create account");
+      toast.error(error.message || "Failed to create account");
     } finally {
       setIsSubmitting(false);
     }
@@ -129,10 +133,10 @@ function Signup() {
           </button>
         </form>
 
-        {resultMessage && (
-          <div className="mt-5 flex justify-center">
-            <RequestResult message={resultType === "success" ? "Done" : resultMessage} />
-          </div>
+        {serverMessage && (
+          <p className={`mt-4 text-sm text-center ${messageType === "success" ? "text-green-700" : "text-red-600"}`}>
+            {serverMessage}
+          </p>
         )}
 
         <p className="text-center text-sm text-gray-500 mt-5">

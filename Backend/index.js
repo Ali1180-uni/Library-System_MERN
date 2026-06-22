@@ -1,22 +1,38 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+// const passport = require('passport');
+const session = require('express-session');
 const {User, Book} = require('./schema/model.js');
 const {validateUser, validateBook} = require('./validation.js');
 const bcrypt = require('bcrypt');
 const nanoid = require('nanoid');
 const app = express();
 const MONGO_URI = 'mongodb://localhost:27017/libraryDB';
-const session = require('express-session');
 const dotenv = require('dotenv');
 dotenv.config();
 
-app.use(session({
-  secret: process.env.secret,
-  resave: false,
-  saveUninitialized: false
-}));
+const SessionOptions = {
+    // store,
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true
+    }
+};
 
+app.use(session(SessionOptions));
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// // Configure passport-local-mongoose strategy
+// passport.use(User.createStrategy());
+
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 const corsOptions = {
   origin: 'http://localhost:5173',
@@ -39,22 +55,23 @@ app.get('/books/auth-check', (req, res) => {
       UserId: req.session.userId,
       Role: req.session.role,
       UserName: req.session.userName,
-      StudentID: req.session.studentId
+      StudentID: req.session.studentId,
+      message: `Welcome back, ${req.session.userName}!`
     });
   } else {
-    res.status(401).json({ IsAuthenticated: false });
+    res.status(401).json({ IsAuthenticated: false, message: 'You are not authenticated' });
   }
 });
 
 app.get('/books/me', async (req, res) => {
   try {
     if (!req.session.userId) {
-      return res.status(401).json({ error: 'Not authenticated' });
+      return res.status(401).json({ error: 'Not authenticated', message: 'You are not authenticated' });
     }
 
     const user = await User.findById(req.session.userId).select('-password');
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found', message: 'User not found' });
     }
 
     res.json({
@@ -66,14 +83,14 @@ app.get('/books/me', async (req, res) => {
       borrowedBooks: user.borrowedBooks
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, message: 'An error occurred while fetching user details' });
   }
 });
 
 app.get("/books/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      return res.status(500).json({ error: "Failed to log out" });
+      return res.status(500).json({ error: "Failed to log out", message: "Failed to log out" });
     }
     res.clearCookie("connect.sid");
     res.json({ message: "Logout successful" });
@@ -83,7 +100,7 @@ app.get("/books/logout", (req, res) => {
 app.post('/signup', async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) {
-    return res.status(400).json({ error: error.details[0].message });
+    return res.status(400).json({ error: error.details[0].message, message: "Invalid input provided" });
   }
 
   try {
@@ -92,7 +109,7 @@ app.post('/signup', async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(409).json({ error: 'User already exists with the same username, email, or Student ID' });
+      return res.status(409).json({ error: 'User already exists with the same username, email, or Student ID', message: 'User already exists with the same username, email, or Student ID' });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -107,7 +124,7 @@ app.post('/signup', async (req, res) => {
     await user.save();
     res.status(201).json({ message: 'User created successfully' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, message: 'An error occurred while creating the user' });
   }
 });
 
@@ -116,11 +133,11 @@ app.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ error: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid username or password", message: "Invalid username or password" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ error: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid username or password", message: "Invalid username or password" });
     }
     req.session.userId = user._id;
     req.session.role = user.role;
@@ -137,7 +154,7 @@ app.post("/login", async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, message: 'An error occurred while logging in' });
   }
 });
 

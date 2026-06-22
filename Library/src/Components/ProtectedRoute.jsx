@@ -1,38 +1,22 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
+// ProtectedRoute.jsx
+import { useEffect, useState } from "react";
+import { Outlet, Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ requiredRole }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const [userRole, setUserRole] = useState(null);
+function ProtectedRoute({ requiredRole }) {
+  const [auth, setAuth] = useState(null); // null = loading
+
   useEffect(() => {
-    const verifyAuth = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/books/auth-check", {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await response.json();
-        setIsAuthenticated(data.IsAuthenticated);
-        setUserRole(data.Role || null);
-      } catch {
-        setIsAuthenticated(false);
-      }
-    };
-
-    verifyAuth();
+    fetch("http://localhost:3000/books/auth-check", { credentials: "include" })
+      .then(r => r.json())
+      .then(data => setAuth(data))
+      .catch(() => setAuth({ IsAuthenticated: false }));
   }, []);
-if (isAuthenticated === null) {
-  return (
-    <div className="loader-container">
-      <div className="spinner"></div>
-      <p className="loader-text">Verifying session...</p>
-    </div>
-  );
+
+  if (auth === null) return <p>Loading...</p>;
+  if (!auth.IsAuthenticated) return <Navigate to="/login" replace />;
+  if (requiredRole && auth.Role !== requiredRole) return <Navigate to="/books" replace />;
+
+  return <Outlet />;
 }
-  if (requiredRole && userRole !== requiredRole) {
-    return <Navigate to="/books" replace />;
-  }
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
-};
 
 export default ProtectedRoute;

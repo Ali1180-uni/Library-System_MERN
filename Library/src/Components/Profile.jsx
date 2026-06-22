@@ -38,9 +38,9 @@ function Profile(props) {
 
           {/* Avatar */}
           {props.UserImage ? (
-            <img src={props.UserImage} alt="User" className="h-24 w-24 rounded-full object-cover border-2 border-green-200 flex-shrink-0" />
+            <img src={props.UserImage} alt="User" className="h-24 w-24 rounded-full object-cover border-2 border-green-200 shrink-0" />
           ) : (
-            <div className="h-24 w-24 rounded-full bg-green-100 border-2 border-green-200 flex items-center justify-center flex-shrink-0">
+            <div className="h-24 w-24 rounded-full bg-green-100 border-2 border-green-200 flex items-center justify-center shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-green-600" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
               </svg>
@@ -57,7 +57,7 @@ function Profile(props) {
               ["Role",       profile?.role       || "Student"],
             ].map(([label, value]) => (
               <div key={label} className="flex gap-2">
-                <span className="text-gray-400 w-24 flex-shrink-0">{label}</span>
+                <span className="text-gray-400 w-24 shrink-0">{label}</span>
                 <span className="text-green-900 font-medium">{value}</span>
               </div>
             ))}
@@ -72,7 +72,7 @@ function Profile(props) {
             <ul className="flex flex-col gap-2">
               {borrowedBooks.map((book, index) => (
                 <li key={index} className="flex items-center gap-2 text-sm text-green-800 border-b border-green-50 pb-2 last:border-0">
-                  <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+                  <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
                   <span>{book.title}</span>
                   <span className="text-gray-400">by {book.author}</span>
                 </li>
