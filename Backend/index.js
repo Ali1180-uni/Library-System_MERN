@@ -4,14 +4,15 @@ import mongoose from 'mongoose';
 // const passport = require('passport');
 import { rateLimit } from 'express-rate-limit';
 import session from 'express-session';
-import { User, Book } from ('./schema/model.js');
+import { User, Book } from './schema/model.js';
 import { validateUser, validateBook } from './validation.js';
 import bcrypt from 'bcrypt';
-import nanoid from 'nanoid';
 const app = express();
-const MONGO_URI = process.env.MONGO_URI;
-const dotenv = require('dotenv');
-dotenv.config();
+const MONGO_URI = process.env.MONGODB_URI;
+import dotenv from 'dotenv';
+dotenv.config({
+  path: './.env'
+});
 
 app.set('trust proxy', 1);
 app.use(express.json());
@@ -177,7 +178,7 @@ app.post("/login", async (req, res) => {
 });
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(3000, () => {
       console.log('Server is running on http://localhost:3000');

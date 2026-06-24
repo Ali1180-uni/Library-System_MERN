@@ -1,9 +1,4 @@
-const Joi = require('joi');
-
-// Helper rule to validate standard 24-character Hex MongoDB ObjectIds
-const objectIdRule = Joi.string().regex(/^[0-9a-fA-F]{24}$/).messages({
-  'string.pattern.base': 'Invalid MongoDB ObjectId format.'
-});
+import Joi from 'joi';
 
 // Validate User Registration Data
 const validateUser = (data) => {
@@ -36,10 +31,10 @@ const validateBook = (data) => {
 // Validate Borrow API Payload
 const validateBorrow = (data) => {
   const schema = Joi.object({
-    userId: objectIdRule.required(), // Target's MongoDB unique identifier
-    bookId: objectIdRule.required()  // Target's MongoDB unique identifier
+    userId: Joi.string().hex().length(24).required(), // Target's MongoDB unique identifier
+    bookId: Joi.string().hex().length(24).required()  // Target's MongoDB unique identifier
   });
   return schema.validate(data);
 };
 
-module.exports = { validateUser, validateBook, validateBorrow };
+export { validateUser, validateBook, validateBorrow };
