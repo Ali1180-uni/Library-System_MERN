@@ -1,27 +1,53 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
 // const passport = require('passport');
-const session = require('express-session');
-const {User, Book} = require('./schema/model.js');
-const {validateUser, validateBook} = require('./validation.js');
-const bcrypt = require('bcrypt');
-const nanoid = require('nanoid');
+import { rateLimit } from 'express-rate-limit';
+import session from 'express-session';
+import { User, Book } from ('./schema/model.js');
+import { validateUser, validateBook } from './validation.js';
+import bcrypt from 'bcrypt';
+import nanoid from 'nanoid';
 const app = express();
-const MONGO_URI = 'mongodb://localhost:27017/libraryDB';
+const MONGO_URI = process.env.MONGO_URI;
 const dotenv = require('dotenv');
 dotenv.config();
 
+app.set('trust proxy', 1);
+app.use(express.json());
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
+// 2. Define the corrected rate-limiting rules
+const limiter = rateLimit({
+  windowMs: 10 * 1000, // 10 seconds
+  limit: 5, // 5 requests per IP per 10-second window
+  standardHeaders: 'draft-7', // Changed from draft-8 to standard stable specification
+  legacyHeaders: false,
+  ipv6Subnet: 56,
+  message: { message: "Too many requests from this IP, please try again after 10 seconds." } // Helpful custom response
+});
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
+
 const SessionOptions = {
-    // store,
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        httpOnly: true
-    }
+  // store,
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    httpOnly: true
+  }
 };
 
 app.use(session(SessionOptions));
@@ -34,18 +60,10 @@ app.use(session(SessionOptions));
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());
 
-const corsOptions = {
-  origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-};
 
-app.use(cors(corsOptions));
-app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send({ message: 'Welcome to the Library Management System API' });
+  res.send({ message: 'Welcome to the Library Management System API' });
 });
 
 app.get('/books/auth-check', (req, res) => {
