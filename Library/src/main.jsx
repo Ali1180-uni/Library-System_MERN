@@ -20,6 +20,7 @@ import "./index.css";
 
 export function Root() {
   const [authUser, setAuthUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:3000/books/auth-check", { credentials: "include" })
@@ -32,8 +33,12 @@ export function Root() {
           localStorage.removeItem("user");
           localStorage.removeItem("token");
         }
+        setAuthLoading(false);
       })
-      .catch(() => setAuthUser(null));
+      .catch(() => {
+        setAuthUser(null);
+        setAuthLoading(false);
+      });
   }, []);
 
   return (
@@ -47,13 +52,13 @@ export function Root() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login setAuthUser={setAuthUser} />} />
             <Route path="/register" element={<Signup />} />
-            <Route element={<ProtectedRoute authUser={authUser} />}>
+            <Route element={<ProtectedRoute authUser={authUser} authLoading={authLoading} />}>
               <Route path="/books">
                 <Route index element={<Books />} />
                 <Route path="borrow/:id" element={<Borrow />} />
               </Route>
               <Route path="/profile/:id" element={<Profile />} />
-              <Route element={<ProtectedRoute authUser={authUser} requiredRole="Admin" />}>
+              <Route element={<ProtectedRoute authUser={authUser} authLoading={authLoading} requiredRole="Admin" />}>
                 <Route path="/books/admin" element={<Admin AvailableBooks={data} />} />
               </Route>
             </Route>

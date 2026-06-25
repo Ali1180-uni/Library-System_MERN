@@ -1,21 +1,9 @@
-// ProtectedRoute.jsx
-import { useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import axios from "axios";
 
-function ProtectedRoute({ requiredRole }) {
-  const [auth, setAuth] = useState(null); // null = loading
-
-  useEffect(() => {
-    axios.get("http://localhost:3000/books/auth-check", { withCredentials: true })
-      .then(response => setAuth(response.data))
-      .catch(() => setAuth({ IsAuthenticated: false }));
-  }, []);
-
-  if (auth === null) return <p>Loading...</p>;
-  if (!auth.IsAuthenticated) return <Navigate to="/login" replace />;
-  if (requiredRole && auth.Role !== requiredRole) return <Navigate to="/books" replace />;
-
+function ProtectedRoute({ authUser, authLoading, requiredRole }) {
+  if (authLoading) return null;
+  if (!authUser) return <Navigate to="/login" replace />;
+  if (requiredRole && authUser.role !== requiredRole) return <Navigate to="/" replace />;
   return <Outlet />;
 }
 
