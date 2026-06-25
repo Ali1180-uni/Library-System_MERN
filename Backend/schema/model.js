@@ -8,7 +8,7 @@ const BookSchema = new mongoose.Schema({
     author: { type: String, required: true },
     Description: { type: String, required: true },
     isAvailable: { type: Boolean, default: true } // Keeps track of stock
-});
+}, {strict: true});
 
 // User Schema
 const UserSchema = new mongoose.Schema({
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Book'
     }]
-});
+}, {strict: true});
 
 const Book = mongoose.model('Book', BookSchema);
 const User = mongoose.model('User', UserSchema);
