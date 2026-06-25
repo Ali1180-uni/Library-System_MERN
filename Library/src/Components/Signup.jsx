@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 function Signup() {
@@ -21,36 +22,26 @@ function Signup() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3000/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(data)
+      await axios.post("http://localhost:3000/signup", data, {
+        withCredentials: true
       });
-
-      const payload = await response.json();
-
-      if (!response.ok) {
-        setMessageType("error");
-        setServerMessage(payload.message || "Failed to create account");
-        toast.error(payload.message || "Failed to create account");
-        return;
-      }
 
       setMessageType("success");
       setServerMessage("Account created successfully");
       toast.success("Account created successfully");
       navigate("/login", { replace: true });
     } catch (error) {
+      // Axios stores the server's error response inside error.response
+      const errorMessage = error.response?.data?.message || error.message || "Failed to create account";
+
       setMessageType("error");
-      setServerMessage(error.message || "Failed to create account");
-      toast.error(error.message || "Failed to create account");
+      setServerMessage(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4 py-10">

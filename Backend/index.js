@@ -1,15 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 // const passport = require('passport');
 import { rateLimit } from 'express-rate-limit';
 import session from 'express-session';
 import { User, Book } from './schema/model.js';
 import { validateUser, validateBook } from './validation.js';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import {connectDB} from './schema/db.connect.js';
 const app = express();
 const MONGO_URI = process.env.MONGODB_URI;
-import dotenv from 'dotenv';
 dotenv.config({
   path: './.env'
 });
@@ -177,13 +177,10 @@ app.post("/login", async (req, res) => {
   }
 });
 
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    app.listen(3000, () => {
-      console.log('Server is running on http://localhost:3000');
-    });
+connectDB().then(() => {
+  app.listen(3000, () => {
+    console.log('Server is running on port 3000');
   })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB:', err.message);
-  });
+}).catch((err) => {
+    console.error('Failed to start server:', err);
+});

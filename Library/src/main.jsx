@@ -8,6 +8,7 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import About from "./Components/About";
 import Books from "./Components/Books";
+import ErrorPage from "./Components/ErrorPage.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute.jsx";
 import Borrow from "./Components/BorrowBook.jsx";
 import Profile from "./Components/Profile.jsx";
@@ -56,6 +57,7 @@ export function Root() {
                 <Route path="/books/admin" element={<Admin AvailableBooks={data} />} />
               </Route>
             </Route>
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </main>
         <Footer />

@@ -1,14 +1,14 @@
 // ProtectedRoute.jsx
 import { useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import axios from "axios";
 
 function ProtectedRoute({ requiredRole }) {
   const [auth, setAuth] = useState(null); // null = loading
 
   useEffect(() => {
-    fetch("http://localhost:3000/books/auth-check", { credentials: "include" })
-      .then(r => r.json())
-      .then(data => setAuth(data))
+    axios.get("http://localhost:3000/books/auth-check", { withCredentials: true })
+      .then(response => setAuth(response.data))
       .catch(() => setAuth({ IsAuthenticated: false }));
   }, []);
 

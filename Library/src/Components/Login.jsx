@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 function Login({ setAuthUser }) {
@@ -10,27 +11,16 @@ function Login({ setAuthUser }) {
   const [serverError, setServerError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onSubmit = async (data) => {
+const onSubmit = async (data) => {
     setServerError("");
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(data)
+      const response = await axios.post("http://localhost:3000/login", data, {
+        withCredentials: true
       });
 
-      const payload = await response.json();
-
-      if (!response.ok) {
-        setServerError(payload.message || "Login failed");
-        toast.error(payload.message || "Login failed");
-        return;
-      }
+      const payload = response.data;
 
       localStorage.setItem("token", "authenticated");
       localStorage.setItem("user", JSON.stringify(payload.user));
@@ -38,12 +28,16 @@ function Login({ setAuthUser }) {
       toast.success("Login successful");
       navigate("/books", { replace: true });
     } catch (error) {
-      setServerError(error.message || "Login failed");
-      toast.error(error.message || "Login failed");
+      // Axios stores the server's error response inside error.response
+      const errorMessage = error.response?.data?.message || error.message || "Login failed";
+      
+      setServerError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4">
