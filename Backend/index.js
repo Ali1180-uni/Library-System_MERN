@@ -18,7 +18,7 @@ app.set('trust proxy', 1);
 app.use(express.json());
 
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://librarysystem-7ozya5gmn-ali1180-unis-projects.vercel.app'],
+  origin: ['http://localhost:5173', 'https://librarysystem-olive.vercel.app/'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
