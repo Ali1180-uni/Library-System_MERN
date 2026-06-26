@@ -23,7 +23,7 @@ export function Root() {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/books/auth-check", { credentials: "include" })
+    fetch(`${import.meta.env.VITE_API_URL}/books/auth-check`, { credentials: "include" })
       .then(r => r.json())
       .then(data => {
         if (data.IsAuthenticated) {
