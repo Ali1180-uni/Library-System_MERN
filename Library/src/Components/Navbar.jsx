@@ -6,7 +6,7 @@ function Navbar({ logo, authUser, setAuthUser }) {
   const displayUser = authUser?.name || "";
 
   const handleLogout = async () => {
-    await fetch("http://localhost:3000/books/logout", { credentials: "include" });
+    await fetch(`${import.meta.env.VITE_API_URL}/books/logout`, { credentials: "include" });
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setAuthUser(null);

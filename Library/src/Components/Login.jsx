@@ -16,7 +16,7 @@ const onSubmit = async (data) => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/login", data, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, data, {
         withCredentials: true
       });
 
