@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
-const { Book, User } = require('./model.js'); // Make sure path matches your models file
-
-// UPDATE this connection string with your local or cloud database URI
-const MONGO_URI = 'mongodb://localhost:27017/libraryDB'; 
+import mongoose from 'mongoose';
+import { Book, User }  from './model.js'; // Make sure path matches your models file
+import dotenv from 'dotenv';
+dotenv.config({
+  path: './.env'
+});
 
 const seedDatabase = async () => {
   try {
     // 1. Establish database link
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect("process.env.MONGODB_URI");
     console.log('Connected to MongoDB for data seeding...');
 
     // 2. Wipe previous data to prevent duplicate unique key errors
