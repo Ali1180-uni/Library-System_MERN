@@ -6,7 +6,10 @@ import { fetchBooks, deleteBook } from "../api/api";
 
 function Admin() {
   const queryClient = useQueryClient();
-  const { data: books = [] } = useQuery({ queryKey: ["books"], queryFn: fetchBooks });
+  const { data: books = [] } = useQuery({
+    queryKey: ["books"],
+    queryFn: fetchBooks,
+  });
 
   const { mutate: handleDelete } = useMutation({
     mutationFn: (id) => deleteBook(id),
@@ -19,11 +22,19 @@ function Admin() {
   return (
     <div className="min-h-screen bg-orange-50 px-8 py-10">
       {/* Header */}
-      <div className="mb-8 pb-4 border-b border-green-200">
-        <h1 className="text-2xl font-bold text-green-900">Admin Dashboard</h1>
-        <p className="text-sm text-gray-400 mt-1">
-          {availableBooks.length} books in system
-        </p>
+      <div className="mb-8 p-6 bg-green-700 rounded-xl shadow-sm flex items-center justify-between">
+        <div>
+          <p className="text-green-200 text-xs uppercase tracking-widest mb-1">
+            Library System
+          </p>
+          <h1 className="text-3xl font-bold text-orange-50">Admin Dashboard</h1>
+        </div>
+        <div className="bg-green-800/60 text-orange-50 px-5 py-3 rounded-lg text-center">
+          <p className="text-2xl font-bold">{availableBooks.length}</p>
+          <p className="text-xs text-green-200 uppercase tracking-wide">
+            Books
+          </p>
+        </div>
       </div>
 
       {/* Grid */}

@@ -4,7 +4,7 @@ import BookDetail from "./BookDetail";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBooks } from "../api/api.js";
 
-function Books() {
+function Books({ role }) {
   const { data: books = [] } = useQuery({
     queryKey: ["books"],
     queryFn: fetchBooks,
@@ -52,7 +52,7 @@ function Books() {
         ))}
       </div>
 
-      {selectedBook && (
+      {selectedBook && role !== "Admin" && (
         <BookDetail book={selectedBook} onClose={() => setSelectedBook(null)} />
       )}
     </div>

@@ -56,7 +56,12 @@ export function Root() {
     <BrowserRouter>
       <Toaster position="top-center" />
       <div className="min-h-screen flex flex-col">
-        <Navbar logo={logo} authUser={authUser} setAuthUser={setAuthUser} />
+        <Navbar
+          logo={logo}
+          role={authUser?.role}
+          authUser={authUser}
+          setAuthUser={setAuthUser}
+        />
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<App />} />
@@ -83,10 +88,13 @@ export function Root() {
               }
             >
               <Route path="/books">
-                <Route index element={<Books />} />
+                <Route index element={<Books role={authUser?.role} />} />
                 <Route path="borrow/:id" element={<Borrow />} />
               </Route>
-              <Route path="/profile/:id" element={<Profile />} />
+              <Route
+                path="/profile/:id"
+                element={<Profile role={authUser?.role} />}
+              />
               <Route
                 element={
                   <ProtectedRoute
