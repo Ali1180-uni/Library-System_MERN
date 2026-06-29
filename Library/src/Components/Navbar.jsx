@@ -1,3 +1,4 @@
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -6,7 +7,8 @@ function Navbar({ logo, authUser, setAuthUser }) {
   const displayUser = authUser?.name || "";
 
   const handleLogout = async () => {
-    await fetch(`${import.meta.env.VITE_API_URL}/books/logout`, { credentials: "include" });
+    // await fetch(`${import.meta.env.VITE_API_URL}/books/logout`, { credentials: "include" });
+    await axios.get("http://localhost:3000/books/logout", { withCredentials: true });
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setAuthUser(null);

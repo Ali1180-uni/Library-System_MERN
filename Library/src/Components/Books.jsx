@@ -1,13 +1,19 @@
-import data from "../../api/data.json";
 import { useState } from "react";
 import BookCard from "./BookCard";
 import BookDetail from "./BookDetail";
+import { useQuery } from "@tanstack/react-query";
+import { fetchBooks } from "../api/api.js";
 
 function Books() {
+  const { data: books = [] } = useQuery({
+    queryKey: ["books"],
+    queryFn: fetchBooks,
+  });
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const filteredBooks = data.filter((book) =>
+  const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
@@ -37,20 +43,17 @@ function Books() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {filteredBooks.map((book) => (
           <BookCard
-            key={book.id}
+            key={book._id}
             Title={book.title}
-            ImgLink={book.image}
-            Author={book.authors?.[0]?.name || "Unknown Author"}
+            ImgLink={book.Image}
+            Author={book.author || "Unknown Author"}
             onClick={() => setSelectedBook(book)}
           />
         ))}
       </div>
 
       {selectedBook && (
-        <BookDetail
-          book={selectedBook}
-          onClose={() => setSelectedBook(null)}
-        />
+        <BookDetail book={selectedBook} onClose={() => setSelectedBook(null)} />
       )}
     </div>
   );

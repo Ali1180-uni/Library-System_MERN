@@ -7,7 +7,7 @@ import { User, Book } from './schema/model.js';
 import { validateUser, validateBook } from './validation.js';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import {connectDB} from './schema/db.connect.js';
+import { connectDB } from './schema/db.connect.js';
 const app = express();
 const MONGO_URI = process.env.MONGODB_URI;
 dotenv.config({
@@ -28,8 +28,8 @@ app.use(cors(corsOptions));
 
 // 2. Define the corrected rate-limiting rules
 const limiter = rateLimit({
-  windowMs: 10 * 1000, // 10 seconds
-  limit: 5, // 5 requests per IP per 10-second window
+  windowMs: 60 * 1000,  // 1 minute
+  limit: 30,   // 30 requests per IP per 1-minute window
   standardHeaders: 'draft-7', // Changed from draft-8 to standard stable specification
   legacyHeaders: false,
   ipv6Subnet: 56,
@@ -45,7 +45,7 @@ const SessionOptions = {
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // must be Date object
     maxAge: 1000 * 60 * 60 * 24 * 7,
     httpOnly: true
   }
@@ -66,6 +66,16 @@ app.use(session(SessionOptions));
 app.get('/', (req, res) => {
   res.send({ message: 'Welcome to the Library Management System API' });
 });
+
+app.get('/books', async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.json(books);
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: 'An error occurred while fetching books' });
+  }
+});
+
 
 app.get('/books/auth-check', (req, res) => {
   if (req.session.userId) {
@@ -114,6 +124,48 @@ app.get("/books/logout", (req, res) => {
     res.clearCookie("connect.sid");
     res.json({ message: "Logout successful" });
   });
+});
+
+
+app.get('/books/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ error: 'Book not found', message: 'Book not found' });
+    }
+    res.json(book);
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: 'An error occurred while fetching the book' });
+  }
+});
+
+
+app.put('/books/:id', async (req, res) => {
+  if (!req.session.userId || req.session.role !== 'Admin')
+    return res.status(403).json({ message: 'Forbidden' });
+
+  try {
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!book) return res.status(404).json({ error: 'Book not found' });
+    res.json(book);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/books/:id', async (req, res) => {
+  if (!req.session.userId || req.session.role !== 'Admin')
+    return res.status(403).json({ message: 'Forbidden' });
+  
+  try {
+    const book = await Book.findByIdAndDelete(req.params.id);
+    if (!book) {
+      return res.status(404).json({ error: 'Book not found', message: 'Book not found' });
+    }
+    res.json({ message: 'Book deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: 'An error occurred while deleting the book' });
+  }
 });
 
 app.post('/signup', async (req, res) => {
@@ -182,5 +234,5 @@ connectDB().then(() => {
     console.log('Server is running on port 3000');
   })
 }).catch((err) => {
-    console.error('Failed to start server:', err);
+  console.error('Failed to start server:', err);
 });
