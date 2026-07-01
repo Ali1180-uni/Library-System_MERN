@@ -1,33 +1,81 @@
-import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
-import { fetchBooks } from "../api/api.js";
+import { useParams, useNavigate } from "react-router-dom";
+import { useForm, useWatch } from "react-hook-form";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { fetchBooks, fetchProfile, borrowBook } from "../api/api.js";
 
 function Borrow() {
   const { id } = useParams();
-  const { data: books = [] } = useQuery({ queryKey: ["books"], queryFn: fetchBooks });
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data: books = [], isLoading: booksLoading } = useQuery({
+    queryKey: ["books"],
+    queryFn: fetchBooks,
+  });
+  const { data: profile, isLoading: profileLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchProfile,
+  });
+
   const book = books.find((b) => b._id === id);
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: { name: profile?.name || "", email: profile?.email || "" },
+  });
 
-  const onSubmit = (data) => console.log(data);
+  // watch live input values
+const watchedName = useWatch({ control, name: "name" });
+const watchedEmail = useWatch({ control, name: "email" });
+
+  // true if user edited values away from actual DB profile
+  const isEdited =
+    profile &&
+    (watchedName !== profile.name || watchedEmail !== profile.email);
+
+  const mutation = useMutation({
+    mutationFn: () => borrowBook(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      navigate("/books");
+    },
+  });
+
+  const onSubmit = () => {
+    toast.promise(mutation.mutateAsync(), {
+      loading: "Borrowing book...",
+      success: "Book borrowed successfully!",
+      error: (err) => err.response?.data?.message || "Failed to borrow book",
+    });
+  };
+
+  if (booksLoading || profileLoading) {
+    return (
+      <div className="min-h-screen bg-orange-50 flex items-center justify-center">
+        <p className="text-green-800 font-medium">Loading details...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-orange-50 flex items-center justify-center px-4 py-10">
       <div className="bg-white border border-green-100 rounded-xl shadow-sm w-full max-w-md p-8 animate-fade-in">
-        {/* Book Info */}
         <div className="mb-6 pb-5 border-b border-green-100">
           <p className="text-xs text-green-600 uppercase tracking-widest mb-1">
             Borrowing
           </p>
-          <h1 className="text-xl font-bold text-green-900">{book?.title}</h1>
+          <h1 className="text-xl font-bold text-green-900">
+            {book?.title || "Book Not Found"}
+          </h1>
           <p className="text-sm text-gray-400 mt-1">{book?.author}</p>
         </div>
 
-        {/* Form */}
         <h2 className="text-sm font-semibold text-green-800 uppercase tracking-wide mb-4">
           Your Details
         </h2>
@@ -59,11 +107,18 @@ function Borrow() {
             )}
           </div>
 
+          {isEdited && (
+            <span className="text-red-500 text-xs">
+              Name/Email must match your account details
+            </span>
+          )}
+
           <button
             type="submit"
-            className="mt-2 bg-green-700 text-orange-50 py-2.5 rounded-lg text-sm font-semibold hover:bg-green-600 active:scale-95 transition-all duration-200"
+            disabled={mutation.isPending || isEdited}
+            className="mt-2 bg-green-700 text-orange-50 py-2.5 rounded-lg text-sm font-semibold hover:bg-green-600 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Borrow Book
+            {mutation.isPending ? "Borrowing..." : "Borrow Book"}
           </button>
         </form>
       </div>

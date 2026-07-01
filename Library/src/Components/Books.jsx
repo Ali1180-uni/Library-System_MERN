@@ -14,7 +14,7 @@ function Books({ role }) {
   const [selectedBook, setSelectedBook] = useState(null);
 
   const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    book.isAvailable && book.title.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (

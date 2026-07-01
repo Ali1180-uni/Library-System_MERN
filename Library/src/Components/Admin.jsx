@@ -22,18 +22,30 @@ function Admin() {
   return (
     <div className="min-h-screen bg-orange-50 px-8 py-10">
       {/* Header */}
-      <div className="mb-8 p-6 bg-green-700 rounded-xl shadow-sm flex items-center justify-between">
+      <div className="mb-8 p-6 bg-green-700 rounded-xl shadow-sm flex items-center justify-between gap-6">
         <div>
           <p className="text-green-200 text-xs uppercase tracking-widest mb-1">
             Library System
           </p>
           <h1 className="text-3xl font-bold text-orange-50">Admin Dashboard</h1>
         </div>
-        <div className="bg-green-800/60 text-orange-50 px-5 py-3 rounded-lg text-center">
-          <p className="text-2xl font-bold">{availableBooks.length}</p>
-          <p className="text-xs text-green-200 uppercase tracking-wide">
-            Books
-          </p>
+
+        <div className="flex gap-4">
+          <div className="bg-green-800/60 border border-green-600/40 text-orange-50 px-6 py-3 rounded-lg text-center min-w-25">
+            <p className="text-2xl font-bold">{availableBooks.length}</p>
+            <p className="text-xs text-green-200 uppercase tracking-wide mt-0.5">
+              Total Books
+            </p>
+          </div>
+
+          <div className="bg-green-800/60 border border-green-600/40 text-orange-50 px-6 py-3 rounded-lg text-center min-w-25">
+            <p className="text-2xl font-bold text-orange-50">
+              {availableBooks.filter((book) => book.isAvailable).length}
+            </p>
+            <p className="text-xs text-green-200 uppercase tracking-wide mt-0.5">
+              Available
+            </p>
+          </div>
         </div>
       </div>
 

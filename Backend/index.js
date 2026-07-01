@@ -98,7 +98,7 @@ app.get('/books/me', async (req, res) => {
       return res.status(401).json({ error: 'Not authenticated', message: 'You are not authenticated' });
     }
 
-    const user = await User.findById(req.session.userId).select('-password');
+    const user = await User.findById(req.session.userId).select('-password').populate('borrowedBooks');
     if (!user) {
       return res.status(404).json({ error: 'User not found', message: 'User not found' });
     }
@@ -157,7 +157,7 @@ app.put('/books/:id', async (req, res) => {
 app.delete('/books/:id', async (req, res) => {
   if (!req.session.userId || req.session.role !== 'Admin')
     return res.status(403).json({ message: 'Forbidden' });
-  
+
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
     if (!book) {
@@ -168,6 +168,35 @@ app.delete('/books/:id', async (req, res) => {
     res.status(500).json({ error: err.message, message: 'An error occurred while deleting the book' });
   }
 });
+
+app.post('/books/borrow/:id', async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: 'Not authenticated', message: 'You are not authenticated' });
+  }
+
+  try {
+    const details = await Book.findById(req.params.id);
+    if (!details) {
+      return res.status(404).json({ error: 'Book not found', message: 'Book not found' });
+    }
+    if (!details.isAvailable) {
+      return res.status(400).json({ error: 'Book unavailable', message: 'This book is already borrowed' });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found', message: 'User not found' });
+    }
+
+    await User.findByIdAndUpdate(req.session.userId, { $push: { borrowedBooks: details._id } });
+    await Book.findByIdAndUpdate(req.params.id, { isAvailable: false }); // ← mark unavailable
+
+    res.json({ message: 'Book borrowed successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message, message: 'An error occurred while borrowing the book' });
+  }
+});
+
 
 app.post('/signup', async (req, res) => {
   const { error } = validateUser(req.body);
