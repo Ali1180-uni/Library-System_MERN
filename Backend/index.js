@@ -107,6 +107,7 @@ app.get('/books/me', async (req, res) => {
       _id: user._id,
       name: user.name,
       username: user.username,
+      email: user.email,
       StudentID: user.StudentID,
       role: user.role,
       borrowedBooks: user.borrowedBooks
